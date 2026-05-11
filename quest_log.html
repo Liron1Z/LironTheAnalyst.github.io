@@ -27,106 +27,68 @@ body{
     radial-gradient(ellipse 60% 70% at 90% 80%,#060e1c,transparent 60%),var(--bg);
   color:var(--s1);
 }
-
-/* TOPBAR */
 .topbar{
   flex-shrink:0;height:52px;
   background:linear-gradient(to bottom,var(--panel2),var(--panel));
   border-bottom:1px solid var(--border2);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 1.5rem;
+  padding:0 1rem;
   box-shadow:0 2px 24px rgba(0,0,0,0.7);
-  position:relative;
+  position:relative;z-index:50;gap:.5rem;
 }
-.topbar::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
-  background:linear-gradient(to right,transparent,var(--bluel),transparent);opacity:.35;
-}
-.topbar-title{
-  font-family:'Cinzel Decorative',serif;
-  font-size:.9rem;letter-spacing:.12em;font-weight:700;
-  color:var(--gold2);
-  text-shadow:0 0 28px rgba(224,200,112,.4);
-}
-.topbar-gems{display:flex;gap:1.5rem}
-.topbar-gem{
-  font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.08em;
-  color:var(--s3);display:flex;align-items:center;gap:5px;
-}
+.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--bluel),transparent);opacity:.35}
+.topbar-left{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.topbar-title{font-family:'Cinzel Decorative',serif;font-size:.9rem;letter-spacing:.12em;font-weight:700;color:var(--gold2);text-shadow:0 0 28px rgba(224,200,112,.4)}
+.topbar-right{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
+.topbar-gems{display:flex;gap:1.2rem;flex-wrap:wrap}
+.topbar-gem{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.08em;color:var(--s3);display:flex;align-items:center;gap:5px}
 .topbar-gem b{color:var(--s0);font-family:'Crimson Pro',serif;font-size:.9rem;font-weight:600}
 .topbar-gem.crit b{color:#f08080}
-.manage-btn{
-  font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.1em;
-  padding:5px 11px;border:1px solid var(--border);border-radius:2px;
-  background:rgba(74,122,170,.1);color:var(--s3);cursor:pointer;transition:all .15s;
-}
+.manage-btn{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.1em;padding:5px 11px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.1);color:var(--s3);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:30px}
 .manage-btn:hover{border-color:var(--bluel);color:var(--gold2)}
-
-/* LAYOUT */
-.body{display:flex;flex:1;min-height:0}
-
-/* LEFT */
-.left{
-  width:300px;flex-shrink:0;
-  background:linear-gradient(to bottom,var(--panel),var(--panel2));
-  border-right:1px solid var(--border2);
-  display:flex;flex-direction:column;min-height:0;
-}
-.left-top{
-  flex-shrink:0;padding:8px;border-bottom:1px solid var(--rule);
-  background:rgba(0,0,0,.25);display:flex;gap:6px;align-items:center;
-}
-.search{
-  flex:1;font-family:'Crimson Pro',serif;font-size:.95rem;
-  background:rgba(5,12,24,.8);border:1px solid var(--border);border-radius:2px;
-  padding:5px 9px;color:var(--s0);outline:none;transition:border-color .15s;
-}
+.hamburger{display:none;background:none;border:1px solid var(--border);border-radius:2px;color:var(--s2);cursor:pointer;font-size:1.1rem;padding:4px 8px;align-items:center;justify-content:center;min-width:36px;min-height:36px;transition:all .15s}
+.hamburger:hover{border-color:var(--bluel);color:var(--gold2)}
+.sync-status{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.08em;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.sync-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sync-status.synced .sync-dot{background:#4caf50}
+.sync-status.syncing .sync-dot{background:var(--gold2);animation:pulse .8s infinite}
+.sync-status.offline .sync-dot,.sync-status.local .sync-dot{background:var(--s4)}
+.sync-text{color:var(--s3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.auth-area{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
+.auth-user{display:flex;align-items:center;gap:6px;font-family:'Crimson Pro',serif;font-size:.82rem;color:var(--s2)}
+.auth-avatar{width:22px;height:22px;border-radius:50%;border:1px solid var(--border2)}
+.auth-name{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-auth{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.09em;padding:5px 10px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.12);color:var(--s2);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:30px}
+.btn-auth:hover{border-color:var(--bluel);color:var(--s0)}
+.btn-auth.google{border-color:rgba(66,133,244,.5);color:#7aaff4}
+.btn-auth.google:hover{background:rgba(66,133,244,.15);border-color:#7aaff4}
+.btn-auth.signout{color:var(--s4)}
+.btn-auth.signout:hover{border-color:var(--red2);color:#f08080}
+.body{display:flex;flex:1;min-height:0;position:relative}
+.left{width:300px;flex-shrink:0;background:linear-gradient(to bottom,var(--panel),var(--panel2));border-right:1px solid var(--border2);display:flex;flex-direction:column;min-height:0;transition:transform .25s ease;z-index:40}
+.left-top{flex-shrink:0;padding:8px;border-bottom:1px solid var(--rule);background:rgba(0,0,0,.25);display:flex;gap:6px;align-items:center}
+.search{flex:1;font-family:'Crimson Pro',serif;font-size:.95rem;background:rgba(5,12,24,.8);border:1px solid var(--border);border-radius:2px;padding:5px 9px;color:var(--s0);outline:none;transition:border-color .15s;min-height:36px}
 .search:focus{border-color:var(--blue)}
 .search::placeholder{color:var(--s4);font-style:italic}
-.btn-done{
-  font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.08em;
-  padding:5px 9px;border:1px solid var(--border);border-radius:2px;
-  background:transparent;color:var(--s3);cursor:pointer;transition:all .15s;white-space:nowrap;
-}
+.btn-done{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.08em;padding:5px 9px;border:1px solid var(--border);border-radius:2px;background:transparent;color:var(--s3);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:36px}
 .btn-done:hover,.btn-done.on{background:var(--bg5);color:var(--gold2);border-color:var(--gold)}
-
 .list-scroll{flex:1;overflow-y:auto}
 .list-scroll::-webkit-scrollbar{width:4px}
 .list-scroll::-webkit-scrollbar-track{background:var(--panel2)}
 .list-scroll::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px}
-
-.front-head{
-  font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.14em;font-weight:600;
-  color:var(--gold);
-  background:linear-gradient(to right,rgba(74,122,170,.18),rgba(74,122,170,.08));
-  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  padding:6px 12px;
-  display:flex;justify-content:space-between;align-items:center;
-  cursor:pointer;user-select:none;margin-top:2px;
-}
+.front-head{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.14em;font-weight:600;color:var(--gold);background:linear-gradient(to right,rgba(74,122,170,.18),rgba(74,122,170,.08));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:6px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;margin-top:2px;min-height:36px}
 .front-head:first-child{margin-top:0;border-top:none}
 .ch-arr{transition:transform .18s;font-size:.6rem;opacity:.55}
 .front-head.coll .ch-arr{transform:rotate(-90deg)}
-
-.qrow{
-  display:flex;align-items:center;
-  padding:7px 10px 7px 12px;
-  border-bottom:1px solid rgba(74,122,170,.08);
-  cursor:pointer;transition:background .1s;position:relative;
-}
+.qrow{display:flex;align-items:center;padding:7px 10px 7px 12px;border-bottom:1px solid rgba(74,122,170,.08);cursor:pointer;transition:background .1s;position:relative;min-height:44px}
 .qrow:hover{background:rgba(74,122,170,.1)}
 .qrow.sel{background:rgba(74,122,170,.2)}
-.qrow.sel::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;
-  width:2px;background:var(--bluel);
-}
+.qrow.sel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--bluel)}
 .qrow-dot{width:14px;flex-shrink:0;text-align:center;font-size:.6rem;color:var(--s4)}
 .qrow.sel .qrow-dot{color:var(--bluel)}
 .qrow-info{flex:1;min-width:0}
-.qrow-name{
-  font-family:'Crimson Pro',serif;font-size:1rem;font-weight:600;
-  color:var(--s1);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.qrow-name{font-family:'Crimson Pro',serif;font-size:1rem;font-weight:600;color:var(--s1);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .qrow.sel .qrow-name{color:var(--s0)}
 .qrow.done-r .qrow-name{color:var(--s4);text-decoration:line-through}
 .qrow-due{font-family:'Crimson Pro',serif;font-size:.78rem;font-style:italic;color:var(--s4);margin-top:1px}
@@ -140,228 +102,131 @@ body{
 .pip.on-medium{background:var(--blue)}
 .pip.on-low{background:var(--s4)}
 .pip.off{background:rgba(100,140,180,.12);border:1px solid rgba(100,140,180,.18)}
-
-/* RIGHT */
-.right{
-  flex:1;min-height:0;
-  background:radial-gradient(ellipse 60% 40% at 20% 15%,#182840,transparent 60%),
-    radial-gradient(ellipse 50% 60% at 80% 85%,#0e1c30,transparent 60%),var(--bg2);
-  display:flex;flex-direction:column;overflow:hidden;
-}
+.right{flex:1;min-height:0;background:radial-gradient(ellipse 60% 40% at 20% 15%,#182840,transparent 60%),radial-gradient(ellipse 50% 60% at 80% 85%,#0e1c30,transparent 60%),var(--bg2);display:flex;flex-direction:column;overflow:hidden}
 .detail{flex:1;overflow-y:auto;padding:1.8rem 2.2rem 1.4rem;position:relative;z-index:1}
 .detail::-webkit-scrollbar{width:4px}
 .detail::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px}
-
-.no-sel{
-  height:100%;display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:.5rem;
-  font-family:'Crimson Pro',serif;font-style:italic;color:var(--s4);font-size:1.05rem;
-}
+.back-btn{display:none;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;padding:7px 14px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.1);color:var(--s2);cursor:pointer;transition:all .15s;margin-bottom:1rem;align-items:center;gap:6px;min-height:36px}
+.back-btn:hover{border-color:var(--bluel);color:var(--gold2)}
+.no-sel{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;font-family:'Crimson Pro',serif;font-style:italic;color:var(--s4);font-size:1.05rem}
 .no-sel-orn{font-size:2rem;opacity:.18;margin-bottom:.3rem;font-style:normal}
-
-/* Detail */
-.d-title-bar{
-  text-align:center;
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  padding:9px 1rem;margin-bottom:1.3rem;
-  background:linear-gradient(to right,transparent,rgba(74,122,170,.07),transparent);
-  position:relative;
-}
-.d-title-bar::before,.d-title-bar::after{
-  content:'✦';position:absolute;top:50%;transform:translateY(-50%);
-  font-size:.65rem;color:var(--gold);opacity:.4;
-}
+.d-title-bar{text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:9px 1rem;margin-bottom:1.3rem;background:linear-gradient(to right,transparent,rgba(74,122,170,.07),transparent);position:relative}
+.d-title-bar::before,.d-title-bar::after{content:'✦';position:absolute;top:50%;transform:translateY(-50%);font-size:.65rem;color:var(--gold);opacity:.4}
 .d-title-bar::before{left:14px}.d-title-bar::after{right:14px}
-.d-title{
-  font-family:'Cinzel',serif;font-size:1.15rem;font-weight:600;
-  color:var(--s0);letter-spacing:.04em;
-  text-shadow:0 0 20px rgba(122,170,212,.25);
-}
-
 .d-meta{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;margin-bottom:1.1rem;align-items:center}
 .d-meta-item{font-family:'Crimson Pro',serif;font-size:.9rem;color:var(--s2);display:flex;align-items:center;gap:6px}
 .d-meta-label{color:var(--s3);font-style:italic;font-size:.82rem}
-.d-due-chip{
-  font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.05em;
-  padding:3px 10px;border:1px solid var(--border2);border-radius:2px;
-  color:var(--s1);background:rgba(74,122,170,.12);
-}
+.d-due-chip{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.05em;padding:3px 10px;border:1px solid var(--border2);border-radius:2px;color:var(--s1);background:rgba(74,122,170,.12)}
 .d-due-chip.ov{border-color:var(--red2);color:#f09090;background:rgba(139,32,32,.12)}
 .d-due-chip.soon{border-color:var(--gold);color:var(--gold2);background:rgba(200,168,76,.1)}
-
 hr.sep{border:none;border-top:1px solid var(--rule);margin:1.1rem 0}
-
-.d-sec-label{
-  font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.14em;
-  color:var(--s3);margin-bottom:5px;display:block;
-}
-.d-textarea{
-  width:100%;min-height:110px;
-  font-family:'Crimson Pro',serif;font-size:1rem;line-height:1.75;
-  color:var(--s0);
-  background:rgba(5,12,24,.55);
-  border:1px solid var(--border);border-radius:2px;
-  padding:9px 12px;outline:none;resize:vertical;transition:border-color .15s,background .15s;
-}
+.d-sec-label{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.14em;color:var(--s3);margin-bottom:5px;display:block}
+.d-textarea{width:100%;min-height:110px;font-family:'Crimson Pro',serif;font-size:1rem;line-height:1.75;color:var(--s0);background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;padding:9px 12px;outline:none;resize:vertical;transition:border-color .15s,background .15s}
 .d-textarea:focus{border-color:var(--blue);background:rgba(5,12,24,.75)}
 .d-textarea::placeholder{color:var(--s4);font-style:italic}
-
-/* Inline edit fields */
-.d-edit-field{
-  font-family:'Crimson Pro',serif;font-size:.9rem;
-  color:var(--s1);background:rgba(5,12,24,.5);
-  border:1px solid var(--border);border-radius:2px;
-  padding:4px 8px;outline:none;transition:border-color .15s;
-  min-width:80px;
-}
+.d-edit-field{font-family:'Crimson Pro',serif;font-size:.9rem;color:var(--s1);background:rgba(5,12,24,.5);border:1px solid var(--border);border-radius:2px;padding:4px 8px;outline:none;transition:border-color .15s;min-width:80px}
 .d-edit-field:focus{border-color:var(--blue);color:var(--s0)}
-.d-edit-select{
-  font-family:'Crimson Pro',serif;font-size:.9rem;
-  color:var(--s1);background:#0a1420;
-  border:1px solid var(--border);border-radius:2px;
-  padding:4px 8px;outline:none;cursor:pointer;
-}
+.d-edit-select{font-family:'Crimson Pro',serif;font-size:.9rem;color:var(--s1);background:#0a1420;border:1px solid var(--border);border-radius:2px;padding:4px 8px;outline:none;cursor:pointer}
 .d-edit-select option{background:#0a1420}
-
-/* Objectives */
 .obj-list{display:flex;flex-direction:column;gap:5px;margin-bottom:.5rem}
 .obj-row{display:flex;align-items:flex-start;gap:9px;font-family:'Crimson Pro',serif;font-size:1rem;color:var(--s2);line-height:1.45}
-.obj-check{
-  width:16px;height:16px;flex-shrink:0;margin-top:3px;
-  border:1px solid var(--s4);border-radius:2px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(5,12,24,.4);transition:all .15s;
-}
+.obj-check{width:22px;height:22px;flex-shrink:0;margin-top:1px;border:1px solid var(--s4);border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(5,12,24,.4);transition:all .15s;min-width:22px}
 .obj-check:hover{border-color:var(--blue)}
 .obj-check.chk{background:var(--teal);border-color:var(--teal2);color:#a0f0e0}
 .obj-check.chk::after{content:'✓';font-size:11px;font-weight:bold}
 .obj-row.done-o .obj-text{text-decoration:line-through;opacity:.38}
 .add-obj-row{display:flex;gap:6px;margin-top:8px}
-.add-obj-inp{
-  flex:1;font-family:'Crimson Pro',serif;font-size:.95rem;
-  background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;
-  padding:5px 9px;color:var(--s0);outline:none;transition:border-color .15s;
-}
+.add-obj-inp{flex:1;font-family:'Crimson Pro',serif;font-size:.95rem;background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;padding:5px 9px;color:var(--s0);outline:none;transition:border-color .15s;min-height:36px}
 .add-obj-inp:focus{border-color:var(--blue)}
 .add-obj-inp::placeholder{color:var(--s4);font-style:italic}
-.btn-addobj{
-  font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.08em;
-  padding:5px 11px;border:1px solid var(--border);border-radius:2px;
-  background:rgba(74,122,170,.15);color:var(--s2);cursor:pointer;transition:all .15s;white-space:nowrap;
-}
+.btn-addobj{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.08em;padding:5px 11px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.15);color:var(--s2);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:36px}
 .btn-addobj:hover{border-color:var(--bluel);color:var(--s0);background:rgba(74,122,170,.28)}
-
 .d-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:.9rem;border-top:1px solid var(--rule);margin-top:.5rem}
-.a-btn{
-  font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.09em;
-  padding:7px 16px;border-radius:2px;cursor:pointer;transition:all .15s;
-}
+.a-btn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.09em;padding:7px 16px;border-radius:2px;cursor:pointer;transition:all .15s;min-height:36px}
 .a-complete{background:rgba(74,122,170,.2);color:var(--s0);border:1px solid var(--blue)}
 .a-complete:hover{background:rgba(74,122,170,.38)}
 .a-reopen{background:transparent;color:var(--s3);border:1px solid var(--border)}
 .a-reopen:hover{border-color:var(--s2);color:var(--s1)}
 .a-del{background:transparent;color:var(--s4);border:1px solid rgba(100,140,180,.14)}
 .a-del:hover{border-color:var(--red2);color:#f08080;background:rgba(139,32,32,.08)}
-
-/* DRAWER */
-.drawer{flex-shrink:0;background:linear-gradient(to bottom,var(--panel),var(--panel2));border-top:1px solid var(--border2)}
-.drawer-tab{
-  display:flex;align-items:center;gap:8px;padding:7px 1.5rem;cursor:pointer;user-select:none;
-  font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.14em;color:var(--gold);transition:color .15s;
-}
+.drawer{flex-shrink:0;background:linear-gradient(to bottom,var(--panel),var(--panel2));border-top:1px solid var(--border2);position:relative;z-index:30}
+.drawer-tab{display:flex;align-items:center;gap:8px;padding:7px 1.5rem;cursor:pointer;user-select:none;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.14em;color:var(--gold);transition:color .15s;min-height:44px}
 .drawer-tab:hover{color:var(--gold3)}
-.drawer-form{
-  display:none;padding:10px 1.5rem 14px;border-top:1px solid var(--rule);
-  flex-wrap:wrap;gap:8px;background:rgba(0,0,0,.2);
-}
+.drawer-form{display:none;padding:10px 1.5rem 14px;border-top:1px solid var(--rule);flex-wrap:wrap;gap:8px;background:rgba(0,0,0,.2)}
 .drawer-form.open{display:flex}
 .ff{display:flex;flex-direction:column;gap:3px}
 .ff-label{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.1em;color:var(--s4)}
-.ff input,.ff select{
-  font-family:'Crimson Pro',serif;font-size:.92rem;color:var(--s0);
-  background:rgba(5,12,24,.65);border:1px solid var(--border);border-radius:2px;
-  padding:5px 8px;outline:none;transition:border-color .15s;
-}
+.ff input,.ff select{font-family:'Crimson Pro',serif;font-size:.92rem;color:var(--s0);background:rgba(5,12,24,.65);border:1px solid var(--border);border-radius:2px;padding:5px 8px;outline:none;transition:border-color .15s;min-height:36px}
 .ff input:focus,.ff select:focus{border-color:var(--blue)}
 .ff select option{background:#0a1420}
 .ff input::placeholder{color:var(--s4);font-style:italic}
 .ff.fn{flex:3;min-width:170px}.ff.fch{flex:2;min-width:120px}.ff.fsm{flex:1;min-width:95px}
 .form-acts{flex:0;display:flex;align-self:flex-end;gap:6px}
-.brune{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.08em;padding:6px 14px;border-radius:2px;cursor:pointer;transition:all .15s}
+.brune{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.08em;padding:6px 14px;border-radius:2px;cursor:pointer;transition:all .15s;min-height:36px}
 .b-accept{background:rgba(74,122,170,.22);color:var(--gold2);border:1px solid var(--blue)}
 .b-accept:hover{background:rgba(74,122,170,.38)}
 .b-cancel{background:transparent;color:var(--s4);border:1px solid var(--border)}
 .b-cancel:hover{border-color:var(--s3);color:var(--s2)}
-
-/* MODAL */
-.modal-wrap{
-  display:none;position:fixed;inset:0;z-index:100;
-  background:rgba(5,10,20,.8);
-  align-items:center;justify-content:center;
-  min-height:500px;
-}
+.modal-wrap{display:none;position:fixed;inset:0;z-index:100;background:rgba(5,10,20,.8);align-items:center;justify-content:center}
 .modal-wrap.open{display:flex}
-.modal{
-  background:linear-gradient(135deg,var(--bg3),var(--bg2));
-  border:1px solid var(--border2);border-radius:3px;
-  width:420px;max-width:95vw;
-  display:flex;flex-direction:column;max-height:80vh;
-  box-shadow:0 20px 60px rgba(0,0,0,.75);
-}
-.modal-hdr{
-  padding:14px 18px;border-bottom:1px solid var(--rule);
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.1em;color:var(--gold2);
-}
-.modal-close{background:none;border:none;cursor:pointer;color:var(--s4);font-size:1.1rem;transition:color .15s}
+.modal{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border2);border-radius:3px;width:420px;max-width:95vw;display:flex;flex-direction:column;max-height:80vh;box-shadow:0 20px 60px rgba(0,0,0,.75)}
+.modal-hdr{padding:14px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.1em;color:var(--gold2)}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--s4);font-size:1.1rem;transition:color .15s;min-width:36px;min-height:36px}
 .modal-close:hover{color:var(--s0)}
 .modal-tabs{display:flex;border-bottom:1px solid var(--rule)}
-.modal-tab{
-  flex:1;padding:8px;text-align:center;cursor:pointer;
-  font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.1em;
-  color:var(--s4);border-bottom:2px solid transparent;transition:all .15s;
-}
+.modal-tab{flex:1;padding:8px;text-align:center;cursor:pointer;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.1em;color:var(--s4);border-bottom:2px solid transparent;transition:all .15s;min-height:36px;display:flex;align-items:center;justify-content:center}
 .modal-tab.active{color:var(--gold2);border-bottom-color:var(--gold)}
 .modal-body{flex:1;overflow-y:auto;padding:14px 18px}
 .modal-body::-webkit-scrollbar{width:4px}
 .modal-body::-webkit-scrollbar-thumb{background:var(--s4)}
 .manage-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.manage-item{
-  display:flex;align-items:center;gap:8px;padding:6px 10px;
-  background:rgba(5,12,24,.4);border:1px solid var(--border);border-radius:2px;
-  font-family:'Crimson Pro',serif;font-size:.95rem;color:var(--s2);
-}
+.manage-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(5,12,24,.4);border:1px solid var(--border);border-radius:2px;font-family:'Crimson Pro',serif;font-size:.95rem;color:var(--s2);min-height:40px}
 .manage-item-name{flex:1}
-.manage-del{background:none;border:none;cursor:pointer;color:var(--s4);font-size:.85rem;transition:color .15s;padding:0 4px}
+.manage-del{background:none;border:none;cursor:pointer;color:var(--s4);font-size:.85rem;transition:color .15s;padding:0 4px;min-width:30px;min-height:30px}
 .manage-del:hover{color:#f08080}
 .manage-add-row{display:flex;gap:6px}
-.manage-add-row input{
-  flex:1;font-family:'Crimson Pro',serif;font-size:.92rem;
-  background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;
-  padding:6px 9px;color:var(--s0);outline:none;transition:border-color .15s;
-}
+.manage-add-row input{flex:1;font-family:'Crimson Pro',serif;font-size:.92rem;background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;padding:6px 9px;color:var(--s0);outline:none;transition:border-color .15s;min-height:36px}
 .manage-add-row input:focus{border-color:var(--blue)}
 .manage-add-row input::placeholder{color:var(--s4);font-style:italic}
-.btn-madd{
-  font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.08em;
-  padding:6px 12px;border:1px solid var(--blue);border-radius:2px;
-  background:rgba(74,122,170,.2);color:var(--s1);cursor:pointer;transition:all .15s;white-space:nowrap;
-}
+.btn-madd{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.08em;padding:6px 12px;border:1px solid var(--blue);border-radius:2px;background:rgba(74,122,170,.2);color:var(--s1);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:36px}
 .btn-madd:hover{background:rgba(74,122,170,.35)}
+.drawer-overlay{display:none;position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.55)}
+@media (max-width:767px){
+  .hamburger{display:flex}
+  .back-btn{display:flex}
+  .topbar-gems{display:none}
+  .left{position:fixed;top:52px;left:0;bottom:0;width:85%;max-width:320px;transform:translateX(-100%);z-index:40;box-shadow:4px 0 24px rgba(0,0,0,.6)}
+  .left.open{transform:translateX(0)}
+  .drawer-overlay.active{display:block}
+  .right{width:100%}
+  .detail{padding:1rem}
+  .drawer-form{flex-direction:column}
+  .ff.fn,.ff.fch,.ff.fsm{flex:1;min-width:0;width:100%}
+  .form-acts{align-self:stretch;justify-content:flex-end}
+  .topbar-title{font-size:.75rem;letter-spacing:.06em}
+  .auth-name{max-width:70px}
+  .btn-auth{padding:4px 8px;font-size:.48rem}
+  .manage-btn{padding:4px 8px;font-size:.48rem}
+  .sync-text{display:none}
+}
 </style>
 </head>
 <body>
-
 <div class="topbar">
-  <div style="display:flex;align-items:center;gap:1rem">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Toggle quest list">☰</button>
     <div class="topbar-title">✦ Game of Life ✦</div>
     <button class="manage-btn" onclick="openModal()">Manage Lists</button>
   </div>
   <div class="topbar-gems" id="tgems"></div>
+  <div class="topbar-right">
+    <div class="sync-status local" id="sync-status"><div class="sync-dot"></div><span class="sync-text" id="sync-text">Local</span></div>
+    <div class="auth-area" id="auth-area"></div>
+  </div>
 </div>
-
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="body">
-  <div class="left">
+  <div class="left" id="left-panel">
     <div class="left-top">
       <input class="search" type="text" placeholder="Search quests..." id="srch" oninput="render()">
       <button class="btn-done" id="btnd" onclick="toggleDone()">Completed</button>
@@ -372,329 +237,224 @@ hr.sep{border:none;border-top:1px solid var(--rule);margin:1.1rem 0}
     <div class="detail" id="detail">
       <div class="no-sel"><div class="no-sel-orn">✦</div>Select a quest to begin</div>
     </div>
-  </div>
-</div>
-
-<div class="drawer">
-  <div class="drawer-tab" onclick="toggleForm()">
-    <span>✦</span> New Quest
-  </div>
-  <div class="drawer-form" id="dform">
-    <div class="ff fn">
-      <span class="ff-label">Quest Name</span>
-      <input type="text" id="fn" placeholder="Name this quest...">
-    </div>
-    <div class="ff fch">
-      <span class="ff-label">Front</span>
-      <select id="ffront"></select>
-    </div>
-    <div class="ff fsm">
-      <span class="ff-label">Mission</span>
-      <select id="fmission"></select>
-    </div>
-    <div class="ff fsm">
-      <span class="ff-label">Priority</span>
-      <select id="fprio">
-        <option value="medium">Medium</option>
-        <option value="critical">Critical</option>
-        <option value="high">High</option>
-        <option value="low">Low</option>
-      </select>
-    </div>
-    <div class="ff fsm">
-      <span class="ff-label">Due Date</span>
-      <input type="date" id="fdue">
-    </div>
-    <div class="form-acts">
-      <button class="brune b-cancel" onclick="cancelForm()">Cancel</button>
-      <button class="brune b-accept" onclick="submitQuest()">Accept Quest</button>
+    <div class="drawer">
+      <div class="drawer-tab" onclick="toggleForm()"><span>✦</span> New Quest</div>
+      <div class="drawer-form" id="dform">
+        <div class="ff fn"><span class="ff-label">Quest Name</span><input type="text" id="fn" placeholder="Name this quest..."></div>
+        <div class="ff fch"><span class="ff-label">Front</span><select id="ffront"></select></div>
+        <div class="ff fsm"><span class="ff-label">Mission</span><select id="fmission"></select></div>
+        <div class="ff fsm"><span class="ff-label">Priority</span><select id="fprio"><option value="medium">Medium</option><option value="critical">Critical</option><option value="high">High</option><option value="low">Low</option></select></div>
+        <div class="ff fsm"><span class="ff-label">Due Date</span><input type="date" id="fdue"></div>
+        <div class="form-acts"><button class="brune b-cancel" onclick="cancelForm()">Cancel</button><button class="brune b-accept" onclick="submitQuest()">Accept Quest</button></div>
+      </div>
     </div>
   </div>
 </div>
-
 <div class="modal-wrap" id="modal-wrap" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-hdr">
-      <span>Manage Lists</span>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="modal-tabs">
-      <div class="modal-tab active" onclick="switchTab('fronts')">Fronts</div>
-      <div class="modal-tab" onclick="switchTab('missions')">Missions</div>
-    </div>
+    <div class="modal-hdr"><span>Manage Lists</span><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="modal-tabs"><div class="modal-tab active" onclick="switchTab('fronts')">Fronts</div><div class="modal-tab" onclick="switchTab('missions')">Missions</div></div>
     <div class="modal-body" id="modal-body"></div>
   </div>
 </div>
-
-<script>
+<script type="module">
+// ============================================================
+// FIREBASE CONFIG
+// REPLACE with your Firebase config from console.firebase.google.com
+// ============================================================
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+// ============================================================
+const USE_FIREBASE = FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY";
+let db=null,auth=null,onSnap=null,unsub=null,currentUser=null,firestoreDoc=null,saveTimeout=null;
 const PNUMS={critical:4,high:3,medium:2,low:1};
 const PNAMES={critical:'Critical',high:'High',medium:'Medium',low:'Low'};
 const PORDER={critical:0,high:1,medium:2,low:3};
 const PCOL={critical:'critical',high:'high',medium:'medium',low:'low'};
-
-function defState(){return{
-  quests:[
-    {id:1,name:'Q1 Quarterly Report',front:'Work',mission:'Management',content:'Prepare and submit the quarterly report before month end.\n\nIncludes data processing, comparative analysis, and internal review.',priority:'critical',due:'2026-05-15',done:false,objectives:[{t:'Collect data',d:true},{t:'Write analysis',d:false},{t:'Send for review',d:false}]},
-    {id:2,name:'Committee Meeting — Housing Policy',front:'Work',mission:'Meetings',content:'Prepare materials and coordinate with all participants.',priority:'high',due:'2026-05-22',done:false,objectives:[{t:'Print presentation',d:false},{t:'Send invitations',d:true}]},
-    {id:3,name:'Weekly Team Standup',front:'Work',mission:'Meetings',content:'',priority:'low',due:'',done:true,objectives:[]},
-    {id:4,name:"Mom's Birthday",front:'Family',mission:'Events',content:'Buy a gift and book a table at the restaurant.',priority:'high',due:'2026-05-25',done:false,objectives:[{t:'Buy gift',d:false},{t:'Book restaurant',d:false}]},
-    {id:5,name:'Schedule Doctor Appointment',front:'Health',mission:'Medical',content:'',priority:'high',due:'2026-05-20',done:false,objectives:[]},
-    {id:6,name:'Renew Car Insurance',front:'Finance',mission:'Insurance',content:'Compare at least two quotes before committing.',priority:'medium',due:'2026-06-01',done:false,objectives:[]},
-    {id:7,name:'Legal Consultation',front:'Finance',mission:'Legal',content:'Regarding the new rental agreement. Check cancellation and liability clauses.',priority:'medium',due:'',done:false,objectives:[]},
-  ],
-  fronts:['Work','Family','Health','Finance'],
-  missions:['Management','Meetings','Events','Medical','Insurance','Legal','General'],
-  nextId:8,
-}}
-
+function defState(){return{quests:[
+  {id:1,name:'Q1 Quarterly Report',front:'Work',mission:'Management',content:'Prepare and submit the quarterly report before month end.\n\nIncludes data processing, comparative analysis, and internal review.',priority:'critical',due:'2026-05-15',done:false,objectives:[{t:'Collect data',d:true},{t:'Write analysis',d:false},{t:'Send for review',d:false}]},
+  {id:2,name:'Committee Meeting — Housing Policy',front:'Work',mission:'Meetings',content:'Prepare materials and coordinate with all participants.',priority:'high',due:'2026-05-22',done:false,objectives:[{t:'Print presentation',d:false},{t:'Send invitations',d:true}]},
+  {id:3,name:'Weekly Team Standup',front:'Work',mission:'Meetings',content:'',priority:'low',due:'',done:true,objectives:[]},
+  {id:4,name:"Mom's Birthday",front:'Family',mission:'Events',content:'Buy a gift and book a table at the restaurant.',priority:'high',due:'2026-05-25',done:false,objectives:[{t:'Buy gift',d:false},{t:'Book restaurant',d:false}]},
+  {id:5,name:'Schedule Doctor Appointment',front:'Health',mission:'Medical',content:'',priority:'high',due:'2026-05-20',done:false,objectives:[]},
+  {id:6,name:'Renew Car Insurance',front:'Finance',mission:'Insurance',content:'Compare at least two quotes before committing.',priority:'medium',due:'2026-06-01',done:false,objectives:[]},
+  {id:7,name:'Legal Consultation',front:'Finance',mission:'Legal',content:'Regarding the new rental agreement. Check cancellation and liability clauses.',priority:'medium',due:'',done:false,objectives:[]},
+],fronts:['Work','Family','Health','Finance'],missions:['Management','Meetings','Events','Medical','Insurance','Legal','General'],nextId:8}}
 let st=JSON.parse(localStorage.getItem('gol_v1')||'null')||defState();
-let sel=null,showDone=false,formOpen=false,collapsed=new Set(),modalTab='fronts';
-
-function save(){localStorage.setItem('gol_v1',JSON.stringify(st))}
+let sel=null,showDone=false,formOpen=false,collapsed=new Set(),modalTab='fronts',drawerOpen=false;
+window.toggleDone=toggleDone;window.toggleFront=toggleFront;window.selectQ=selectQ;
+window.editField=editField;window.saveContent=saveContent;window.toggleComplete=toggleComplete;
+window.toggleObj=toggleObj;window.delObj=delObj;window.addObj=addObj;window.delQ=delQ;
+window.toggleForm=toggleForm;window.cancelForm=cancelForm;window.submitQuest=submitQuest;
+window.openModal=openModal;window.closeModal=closeModal;window.switchTab=switchTab;
+window.addItem=addItem;window.removeItem=removeItem;window.toggleDrawer=toggleDrawer;
+window.closeDrawer=closeDrawer;window.goBack=goBack;
+window.signInWithGoogle=signInWithGoogle;window.signOutUser=signOutUser;window.upgradeToGoogle=upgradeToGoogle;
+function setSyncStatus(s,l){document.getElementById('sync-status').className='sync-status '+s;document.getElementById('sync-text').textContent=l}
+function saveLocal(){localStorage.setItem('gol_v1',JSON.stringify(st))}
+function save(){saveLocal();if(USE_FIREBASE&&firestoreDoc&&window._setDoc)pushToFirestore()}
+async function initFirebase(){
+  if(!USE_FIREBASE){setSyncStatus('local','Local');renderAuth();return}
+  try{
+    setSyncStatus('syncing','Connecting…');
+    const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+    const fm=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+    const am=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
+    const {getFirestore,doc,setDoc,onSnapshot,enableIndexedDbPersistence}=fm;
+    const {getAuth,signInAnonymously,GoogleAuthProvider,signInWithPopup,linkWithPopup,signOut,onAuthStateChanged}=am;
+    onSnap=onSnapshot;
+    const app=initializeApp(FIREBASE_CONFIG);
+    db=getFirestore(app);auth=getAuth(app);
+    try{await enableIndexedDbPersistence(db)}catch(e){}
+    window._gp=new GoogleAuthProvider();
+    window._signInWithPopup=signInWithPopup;window._linkWithPopup=linkWithPopup;
+    window._signOut=signOut;window._doc=doc;window._setDoc=setDoc;
+    onAuthStateChanged(auth,async user=>{
+      currentUser=user;
+      if(user){setSyncStatus('syncing','Syncing…');firestoreDoc=doc(db,'users',user.uid,'data','questlog');subscribeFS()}
+      else{try{await signInAnonymously(auth)}catch(e){setSyncStatus('offline','Offline')}}
+      renderAuth();
+    });
+  }catch(e){console.warn('Firebase failed:',e);setSyncStatus('offline','Offline');renderAuth()}
+}
+function subscribeFS(){
+  if(unsub)unsub();if(!firestoreDoc||!onSnap)return;
+  setSyncStatus('syncing','Syncing…');
+  unsub=onSnap(firestoreDoc,snap=>{
+    if(snap.exists()){const d=snap.data();if(d&&d.state){st=d.state;saveLocal();render()}}
+    else pushToFirestore();
+    setSyncStatus('synced','Synced');
+  },err=>{console.warn(err);setSyncStatus('offline','Offline')});
+}
+function pushToFirestore(){
+  if(!firestoreDoc||!window._setDoc)return;
+  if(saveTimeout)clearTimeout(saveTimeout);
+  saveTimeout=setTimeout(async()=>{
+    try{setSyncStatus('syncing','Saving…');await window._setDoc(firestoreDoc,{state:st},{merge:false});setSyncStatus('synced','Synced')}
+    catch(e){console.warn(e);setSyncStatus('offline','Offline')}
+  },600);
+}
+function renderAuth(){
+  const area=document.getElementById('auth-area');
+  if(!USE_FIREBASE){area.innerHTML='';return}
+  const user=currentUser;
+  if(!user){area.innerHTML=`<button class="btn-auth google" onclick="signInWithGoogle()">Sign in with Google</button>`;return}
+  if(user.isAnonymous){
+    area.innerHTML=`<span style="color:var(--s4);font-size:.75rem;font-style:italic;font-family:'Crimson Pro',serif">Anonymous</span><button class="btn-auth google" onclick="upgradeToGoogle()">↑ Google</button>`;
+  }else{
+    const photo=user.photoURL?`<img class="auth-avatar" src="${user.photoURL}" alt="">`:'';
+    const name=user.displayName||user.email||'User';
+    area.innerHTML=`<div class="auth-user">${photo}<span class="auth-name" title="${name}">${name}</span></div><button class="btn-auth signout" onclick="signOutUser()">Sign Out</button>`;
+  }
+}
+async function signInWithGoogle(){if(!auth||!window._gp)return;try{setSyncStatus('syncing','Signing in…');await window._signInWithPopup(auth,window._gp)}catch(e){setSyncStatus('offline','Error')}}
+async function upgradeToGoogle(){
+  if(!auth||!auth.currentUser||!window._gp)return;
+  try{setSyncStatus('syncing','Linking…');await window._linkWithPopup(auth.currentUser,window._gp);renderAuth();setSyncStatus('synced','Synced')}
+  catch(e){if(e.code==='auth/credential-already-in-use'){try{await window._signInWithPopup(auth,window._gp)}catch(e2){setSyncStatus('offline','Error')}}else setSyncStatus('offline','Error')}
+}
+async function signOutUser(){
+  if(!auth||!window._signOut)return;
+  try{if(unsub){unsub();unsub=null}await window._signOut(auth);currentUser=null;firestoreDoc=null;setSyncStatus('local','Local');renderAuth()}
+  catch(e){console.warn(e)}
+}
+function toggleDrawer(){drawerOpen=!drawerOpen;document.getElementById('left-panel').classList.toggle('open',drawerOpen);document.getElementById('drawer-overlay').classList.toggle('active',drawerOpen)}
+function closeDrawer(){drawerOpen=false;document.getElementById('left-panel').classList.remove('open');document.getElementById('drawer-overlay').classList.remove('active')}
+function goBack(){sel=null;renderList();renderDetail();if(window.innerWidth<=767)toggleDrawer()}
 function today(){return new Date().toISOString().split('T')[0]}
 function daysUntil(d){if(!d)return null;return Math.round((new Date(d)-new Date(today()))/86400000)}
 function fmt(d){if(!d)return '';const[y,m,day]=d.split('-');return`${day}.${m}.${y}`}
 function esc(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
-
-function pipHtml(p,sz=7){
-  const n=PNUMS[p]||1,c=PCOL[p];
-  return Array.from({length:4},(_,i)=>
-    `<div class="pip ${i<n?'on-'+c:'off'}" style="width:${sz}px;height:${sz}px"></div>`
-  ).join('');
-}
-
+function pipHtml(p,sz=7){const n=PNUMS[p]||1,c=PCOL[p];return Array.from({length:4},(_,i)=>`<div class="pip ${i<n?'on-'+c:'off'}" style="width:${sz}px;height:${sz}px"></div>`).join('')}
 function toggleDone(){showDone=!showDone;document.getElementById('btnd').classList.toggle('on',showDone);render()}
-
 function render(){save();renderGems();renderList();renderDetail();populateSelects()}
-
 function renderGems(){
-  const act=st.quests.filter(q=>!q.done).length;
-  const dn=st.quests.filter(q=>q.done).length;
-  const cr=st.quests.filter(q=>!q.done&&q.priority==='critical').length;
-  document.getElementById('tgems').innerHTML=
-    `<div class="topbar-gem">Active: <b>${act}</b></div>`+
-    (cr?`<div class="topbar-gem crit">Critical: <b>${cr}</b></div>`:'')+
-    `<div class="topbar-gem">Done: <b>${dn}</b></div>`;
+  const act=st.quests.filter(q=>!q.done).length,dn=st.quests.filter(q=>q.done).length,cr=st.quests.filter(q=>!q.done&&q.priority==='critical').length;
+  document.getElementById('tgems').innerHTML=`<div class="topbar-gem">Active: <b>${act}</b></div>`+(cr?`<div class="topbar-gem crit">Critical: <b>${cr}</b></div>`:'')+`<div class="topbar-gem">Done: <b>${dn}</b></div>`;
 }
-
 function renderList(){
   const q=document.getElementById('srch').value.trim().toLowerCase();
-  let vis=st.quests.filter(qst=>{
-    if(!showDone&&qst.done)return false;
-    if(q&&!qst.name.toLowerCase().includes(q)&&!(qst.front||'').toLowerCase().includes(q))return false;
-    return true;
-  });
+  let vis=st.quests.filter(qst=>{if(!showDone&&qst.done)return false;if(q&&!qst.name.toLowerCase().includes(q)&&!(qst.front||'').toLowerCase().includes(q))return false;return true});
   const order=[];const byF={};
-  for(const qst of vis){
-    const f=qst.front||'General';
-    if(!byF[f]){byF[f]=[];order.push(f)}
-    byF[f].push(qst);
-  }
+  for(const qst of vis){const f=qst.front||'General';if(!byF[f]){byF[f]=[];order.push(f)}byF[f].push(qst)}
   let h='';
-  if(!order.length){
-    h='<div style="color:var(--s4);font-style:italic;font-family:\'Crimson Pro\',serif;font-size:.95rem;padding:1.2rem;text-align:center">No quests found</div>';
-  } else {
-    for(const f of order){
-      const isColl=collapsed.has(f);
-      h+=`<div class="front-head${isColl?' coll':''}" onclick="toggleFront('${esc(f)}')">
-        <span>${f}</span><span class="ch-arr">▾</span>
-      </div>`;
-      if(!isColl){
-        const sorted=byF[f].slice().sort((a,b)=>{
-          if(a.done!==b.done)return a.done?1:-1;
-          return(PORDER[a.priority]||2)-(PORDER[b.priority]||2);
-        });
-        for(const qst of sorted){
-          const days=daysUntil(qst.due);
-          let dueLine='';
-          if(qst.due){
-            let cls='',lbl='';
-            if(days<0){cls='ov';lbl=`Overdue ${-days}d`}
-            else if(days===0){cls='soon';lbl='Today!'}
-            else if(days<=3){cls='soon';lbl=`${days} days`}
-            else lbl=fmt(qst.due);
-            dueLine=`<div class="qrow-due ${cls}">${lbl}</div>`;
-          }
-          h+=`<div class="qrow${sel===qst.id?' sel':''}${qst.done?' done-r':''}" onclick="selectQ(${qst.id})">
-            <div class="qrow-dot">${sel===qst.id?'►':'·'}</div>
-            <div class="qrow-info">
-              <div class="qrow-name">${qst.name}</div>
-              ${dueLine}
-            </div>
-            <div class="qrow-right"><div class="pips">${pipHtml(qst.priority,7)}</div></div>
-          </div>`;
-        }
+  if(!order.length){h='<div style="color:var(--s4);font-style:italic;font-family:\'Crimson Pro\',serif;font-size:.95rem;padding:1.2rem;text-align:center">No quests found</div>'}
+  else{for(const f of order){
+    const isColl=collapsed.has(f);
+    h+=`<div class="front-head${isColl?' coll':''}" onclick="toggleFront('${esc(f)}')"><span>${f}</span><span class="ch-arr">▾</span></div>`;
+    if(!isColl){
+      const sorted=byF[f].slice().sort((a,b)=>{if(a.done!==b.done)return a.done?1:-1;return(PORDER[a.priority]||2)-(PORDER[b.priority]||2)});
+      for(const qst of sorted){
+        const days=daysUntil(qst.due);let dueLine='';
+        if(qst.due){let cls='',lbl='';if(days<0){cls='ov';lbl=`Overdue ${-days}d`}else if(days===0){cls='soon';lbl='Today!'}else if(days<=3){cls='soon';lbl=`${days} days`}else lbl=fmt(qst.due);dueLine=`<div class="qrow-due ${cls}">${lbl}</div>`}
+        h+=`<div class="qrow${sel===qst.id?' sel':''}${qst.done?' done-r':''}" onclick="selectQ(${qst.id})"><div class="qrow-dot">${sel===qst.id?'►':'·'}</div><div class="qrow-info"><div class="qrow-name">${qst.name}</div>${dueLine}</div><div class="qrow-right"><div class="pips">${pipHtml(qst.priority,7)}</div></div></div>`;
       }
     }
-  }
+  }}
   document.getElementById('lscroll').innerHTML=h;
 }
-
 function toggleFront(f){if(collapsed.has(f))collapsed.delete(f);else collapsed.add(f);renderList()}
-function selectQ(id){sel=id;renderList();renderDetail();const el=document.querySelector('.qrow.sel');if(el)el.scrollIntoView({block:'nearest'})}
-
+function selectQ(id){sel=id;renderList();renderDetail();const el=document.querySelector('.qrow.sel');if(el)el.scrollIntoView({block:'nearest'});if(window.innerWidth<=767)closeDrawer()}
 function renderDetail(){
   const el=document.getElementById('detail');
   if(!sel){el.innerHTML='<div class="no-sel"><div class="no-sel-orn">✦</div>Select a quest to begin</div>';return}
   const q=st.quests.find(x=>x.id===sel);
   if(!q){el.innerHTML='<div class="no-sel"><div class="no-sel-orn">✦</div>Select a quest to begin</div>';return}
-
-  const days=daysUntil(q.due);
-  let dueChip='';
-  if(q.due){
-    let cls='',lbl='';
-    if(days<0){cls='ov';lbl=`Overdue by ${-days} days`}
-    else if(days===0){cls='soon';lbl='Due Today!'}
-    else if(days===1){cls='soon';lbl='Due Tomorrow'}
-    else if(days<=7){cls='soon';lbl=`Due in ${days} days — ${fmt(q.due)}`}
-    else lbl=`${fmt(q.due)} — ${days} days`;
-    dueChip=`<div class="d-due-chip ${cls}">📅 ${lbl}</div>`;
-  }
-
-  const sdone=q.objectives.filter(s=>s.d).length;
-  const stotal=q.objectives.length;
-
+  const days=daysUntil(q.due);let dueChip='';
+  if(q.due){let cls='',lbl='';if(days<0){cls='ov';lbl=`Overdue by ${-days} days`}else if(days===0){cls='soon';lbl='Due Today!'}else if(days===1){cls='soon';lbl='Due Tomorrow'}else if(days<=7){cls='soon';lbl=`Due in ${days} days — ${fmt(q.due)}`}else lbl=`${fmt(q.due)} — ${days} days`;dueChip=`<div class="d-due-chip ${cls}">📅 ${lbl}</div>`}
+  const sdone=q.objectives.filter(s=>s.d).length,stotal=q.objectives.length;
   const frontOpts=st.fronts.map(f=>`<option value="${f}"${f===q.front?' selected':''}>${f}</option>`).join('');
   const missionOpts=st.missions.map(m=>`<option value="${m}"${m===q.mission?' selected':''}>${m}</option>`).join('');
   const prioOpts=['critical','high','medium','low'].map(p=>`<option value="${p}"${p===q.priority?' selected':''}>${PNAMES[p]}</option>`).join('');
-
   el.innerHTML=`
+    <button class="back-btn" onclick="goBack()">← Quests</button>
     <div class="d-title-bar">
       <input class="d-edit-field" style="text-align:center;font-family:'Cinzel',serif;font-size:1.1rem;font-weight:600;color:var(--s0);width:100%;background:transparent;border-color:transparent;letter-spacing:.04em"
-        value="${q.name.replace(/"/g,'&quot;')}"
-        onchange="editField(${q.id},'name',this.value)"
-        onfocus="this.style.borderColor='var(--border)'"
-        onblur="this.style.borderColor='transparent'">
+        value="${q.name.replace(/"/g,'&quot;')}" onchange="editField(${q.id},'name',this.value)"
+        onfocus="this.style.borderColor='var(--border)'" onblur="this.style.borderColor='transparent'">
     </div>
-
     <div class="d-meta">
-      <div class="d-meta-item">
-        <span class="d-meta-label">Priority</span>
-        <div class="pips" style="margin:0 2px">${pipHtml(q.priority,9)}</div>
-        <select class="d-edit-select" onchange="editField(${q.id},'priority',this.value)">${prioOpts}</select>
-      </div>
-      <div class="d-meta-item">
-        <span class="d-meta-label">Front</span>
-        <select class="d-edit-select" onchange="editField(${q.id},'front',this.value)">${frontOpts}</select>
-      </div>
-      <div class="d-meta-item">
-        <span class="d-meta-label">Mission</span>
-        <select class="d-edit-select" onchange="editField(${q.id},'mission',this.value)">${missionOpts}</select>
-      </div>
-      <div class="d-meta-item">
-        <span class="d-meta-label">Due</span>
-        <input type="date" class="d-edit-field" value="${q.due||''}" onchange="editField(${q.id},'due',this.value)" style="font-size:.82rem;padding:3px 7px">
-      </div>
-      ${dueChip}
-      ${stotal?`<div class="d-meta-item"><span class="d-meta-label">Objectives</span>${sdone}/${stotal}</div>`:''}
+      <div class="d-meta-item"><span class="d-meta-label">Priority</span><div class="pips" style="margin:0 2px">${pipHtml(q.priority,9)}</div><select class="d-edit-select" onchange="editField(${q.id},'priority',this.value)">${prioOpts}</select></div>
+      <div class="d-meta-item"><span class="d-meta-label">Front</span><select class="d-edit-select" onchange="editField(${q.id},'front',this.value)">${frontOpts}</select></div>
+      <div class="d-meta-item"><span class="d-meta-label">Mission</span><select class="d-edit-select" onchange="editField(${q.id},'mission',this.value)">${missionOpts}</select></div>
+      <div class="d-meta-item"><span class="d-meta-label">Due</span><input type="date" class="d-edit-field" value="${q.due||''}" onchange="editField(${q.id},'due',this.value)" style="font-size:.82rem;padding:3px 7px"></div>
+      ${dueChip}${stotal?`<div class="d-meta-item"><span class="d-meta-label">Objectives</span>${sdone}/${stotal}</div>`:''}
     </div>
-
-    <hr class="sep">
-    <span class="d-sec-label">Notes</span>
+    <hr class="sep"><span class="d-sec-label">Notes</span>
     <textarea class="d-textarea" id="d-ta" placeholder="Details, links, notes..." onchange="saveContent(${q.id})">${q.content||''}</textarea>
-
-    <hr class="sep">
-    <span class="d-sec-label">Objectives</span>
-    <div class="obj-list">
-      ${q.objectives.map((o,i)=>`
-        <div class="obj-row${o.d?' done-o':''}">
-          <div class="obj-check${o.d?' chk':''}" onclick="toggleObj(${q.id},${i})"></div>
-          <span class="obj-text" style="flex:1">${o.t}</span>
-          <button style="background:none;border:none;cursor:pointer;color:var(--s4);font-size:.8rem;padding:0 4px" onclick="delObj(${q.id},${i})">✕</button>
-        </div>`).join('')}
-    </div>
-    <div class="add-obj-row">
-      <input class="add-obj-inp" type="text" id="new-obj" placeholder="Add objective..." onkeydown="if(event.key==='Enter')addObj(${q.id})">
-      <button class="btn-addobj" onclick="addObj(${q.id})">+ Add</button>
-    </div>
-
+    <hr class="sep"><span class="d-sec-label">Objectives</span>
+    <div class="obj-list">${q.objectives.map((o,i)=>`<div class="obj-row${o.d?' done-o':''}"><div class="obj-check${o.d?' chk':''}" onclick="toggleObj(${q.id},${i})"></div><span class="obj-text" style="flex:1">${o.t}</span><button style="background:none;border:none;cursor:pointer;color:var(--s4);font-size:.8rem;padding:0 4px;min-width:30px;min-height:30px" onclick="delObj(${q.id},${i})">✕</button></div>`).join('')}</div>
+    <div class="add-obj-row"><input class="add-obj-inp" type="text" id="new-obj" placeholder="Add objective..." onkeydown="if(event.key==='Enter')addObj(${q.id})"><button class="btn-addobj" onclick="addObj(${q.id})">+ Add</button></div>
     <div class="d-actions">
-      ${q.done
-        ?`<button class="a-btn a-reopen" onclick="toggleComplete(${q.id})">↩ Reopen Quest</button>`
-        :`<button class="a-btn a-complete" onclick="toggleComplete(${q.id})">✓ Complete Quest</button>`}
+      ${q.done?`<button class="a-btn a-reopen" onclick="toggleComplete(${q.id})">↩ Reopen Quest</button>`:`<button class="a-btn a-complete" onclick="toggleComplete(${q.id})">✓ Complete Quest</button>`}
       <button class="a-btn a-del" onclick="delQ(${q.id})">✕ Delete</button>
     </div>`;
 }
-
-function editField(id,field,val){
-  const q=st.quests.find(x=>x.id===id);
-  if(!q)return;
-  q[field]=val;
-  save();
-  renderGems();
-  renderList();
-  if(field==='priority'||field==='due'){
-    const days=daysUntil(q.due);
-    document.querySelector('.pips').innerHTML=pipHtml(q.priority,9);
-    const chip=document.querySelector('.d-due-chip');
-    if(chip||q.due){renderDetail()}
-  }
-}
-
+function editField(id,field,val){const q=st.quests.find(x=>x.id===id);if(!q)return;q[field]=val;save();renderGems();renderList();if(field==='priority'||field==='due'){const p=document.querySelector('.pips');if(p)p.innerHTML=pipHtml(q.priority,9);const c=document.querySelector('.d-due-chip');if(c||q.due)renderDetail()}}
 function saveContent(id){const q=st.quests.find(x=>x.id===id);if(q){q.content=document.getElementById('d-ta').value;save()}}
 function toggleComplete(id){const q=st.quests.find(x=>x.id===id);if(q){q.done=!q.done;render()}}
 function toggleObj(qid,i){const q=st.quests.find(x=>x.id===qid);if(q){q.objectives[i].d=!q.objectives[i].d;save();renderDetail()}}
 function delObj(qid,i){const q=st.quests.find(x=>x.id===qid);if(q){q.objectives.splice(i,1);save();renderDetail()}}
-function addObj(qid){
-  const el=document.getElementById('new-obj');const v=el.value.trim();if(!v)return;
-  const q=st.quests.find(x=>x.id===qid);
-  if(q){q.objectives.push({t:v,d:false});el.value='';save();renderDetail()}
-}
+function addObj(qid){const el=document.getElementById('new-obj');const v=el.value.trim();if(!v)return;const q=st.quests.find(x=>x.id===qid);if(q){q.objectives.push({t:v,d:false});el.value='';save();renderDetail()}}
 function delQ(id){st.quests=st.quests.filter(x=>x.id!==id);sel=null;render()}
-
-function populateSelects(){
-  const ff=document.getElementById('ffront');
-  const fm=document.getElementById('fmission');
-  const cf=ff.value,cm=fm.value;
-  ff.innerHTML=st.fronts.map(f=>`<option value="${f}"${f===cf?' selected':''}>${f}</option>`).join('');
-  fm.innerHTML=st.missions.map(m=>`<option value="${m}"${m===cm?' selected':''}>${m}</option>`).join('');
-}
-
+function populateSelects(){const ff=document.getElementById('ffront'),fm=document.getElementById('fmission');const cf=ff.value,cm=fm.value;ff.innerHTML=st.fronts.map(f=>`<option value="${f}"${f===cf?' selected':''}>${f}</option>`).join('');fm.innerHTML=st.missions.map(m=>`<option value="${m}"${m===cm?' selected':''}>${m}</option>`).join('')}
 function toggleForm(){formOpen=!formOpen;document.getElementById('dform').classList.toggle('open',formOpen)}
 function cancelForm(){formOpen=false;document.getElementById('dform').classList.remove('open');document.getElementById('fn').value='';document.getElementById('fdue').value=''}
-function submitQuest(){
-  const name=document.getElementById('fn').value.trim();if(!name){document.getElementById('fn').focus();return}
-  const q={id:st.nextId++,name,front:document.getElementById('ffront').value,mission:document.getElementById('fmission').value,priority:document.getElementById('fprio').value,due:document.getElementById('fdue').value,content:'',done:false,objectives:[]};
-  st.quests.unshift(q);sel=q.id;cancelForm();render();
-}
-
+function submitQuest(){const name=document.getElementById('fn').value.trim();if(!name){document.getElementById('fn').focus();return}const q={id:st.nextId++,name,front:document.getElementById('ffront').value,mission:document.getElementById('fmission').value,priority:document.getElementById('fprio').value,due:document.getElementById('fdue').value,content:'',done:false,objectives:[]};st.quests.unshift(q);sel=q.id;cancelForm();render()}
 function openModal(){document.getElementById('modal-wrap').classList.add('open');renderModal()}
 function closeModal(){document.getElementById('modal-wrap').classList.remove('open')}
-function switchTab(t){
-  modalTab=t;
-  document.querySelectorAll('.modal-tab').forEach((el,i)=>el.classList.toggle('active',['fronts','missions'][i]===t));
-  renderModal();
-}
-function renderModal(){
-  const items=modalTab==='fronts'?st.fronts:st.missions;
-  const label=modalTab==='fronts'?'New Front':'New Mission';
-  const ph=modalTab==='fronts'?'Front name...':'Mission name...';
-  document.getElementById('modal-body').innerHTML=`
-    <div class="manage-list">
-      ${items.map((it,i)=>`
-        <div class="manage-item">
-          <span class="manage-item-name">${it}</span>
-          <button class="manage-del" onclick="removeItem(${i})">✕</button>
-        </div>`).join('')}
-    </div>
-    <div class="manage-add-row">
-      <input type="text" id="new-item" placeholder="${ph}" onkeydown="if(event.key==='Enter')addItem()">
-      <button class="btn-madd" onclick="addItem()">+ ${label}</button>
-    </div>`;
-}
-function addItem(){
-  const el=document.getElementById('new-item');const v=el.value.trim();if(!v)return;
-  if(modalTab==='fronts'){if(!st.fronts.includes(v))st.fronts.push(v)}
-  else{if(!st.missions.includes(v))st.missions.push(v)}
-  el.value='';save();renderModal();populateSelects();
-}
-function removeItem(i){
-  if(modalTab==='fronts')st.fronts.splice(i,1);
-  else st.missions.splice(i,1);
-  save();renderModal();populateSelects();
-}
-
+function switchTab(t){modalTab=t;document.querySelectorAll('.modal-tab').forEach((el,i)=>el.classList.toggle('active',['fronts','missions'][i]===t));renderModal()}
+function renderModal(){const items=modalTab==='fronts'?st.fronts:st.missions;const label=modalTab==='fronts'?'New Front':'New Mission';const ph=modalTab==='fronts'?'Front name...':'Mission name...';document.getElementById('modal-body').innerHTML=`<div class="manage-list">${items.map((it,i)=>`<div class="manage-item"><span class="manage-item-name">${it}</span><button class="manage-del" onclick="removeItem(${i})">✕</button></div>`).join('')}</div><div class="manage-add-row"><input type="text" id="new-item" placeholder="${ph}" onkeydown="if(event.key==='Enter')addItem()"><button class="btn-madd" onclick="addItem()">+ ${label}</button></div>`}
+function addItem(){const el=document.getElementById('new-item');const v=el.value.trim();if(!v)return;if(modalTab==='fronts'){if(!st.fronts.includes(v))st.fronts.push(v)}else{if(!st.missions.includes(v))st.missions.push(v)}el.value='';save();renderModal();populateSelects()}
+function removeItem(i){if(modalTab==='fronts')st.fronts.splice(i,1);else st.missions.splice(i,1);save();renderModal();populateSelects()}
 render();
+initFirebase();
 </script>
 </body>
 </html>
