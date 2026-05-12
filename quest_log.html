@@ -294,7 +294,7 @@ window.toggleForm=toggleForm;window.cancelForm=cancelForm;window.submitQuest=sub
 window.openModal=openModal;window.closeModal=closeModal;window.switchTab=switchTab;
 window.addItem=addItem;window.removeItem=removeItem;window.toggleDrawer=toggleDrawer;
 window.closeDrawer=closeDrawer;window.goBack=goBack;
-window.signInWithGoogle=signInWithGoogle;window.signOutUser=signOutUser;window.upgradeToGoogle=upgradeToGoogle;
+window.signInWithGoogle=signInWithGoogle;window.signOutUser=signOutUser;
 function setSyncStatus(s,l){document.getElementById('sync-status').className='sync-status '+s;document.getElementById('sync-text').textContent=l}
 function saveLocal(){localStorage.setItem('gol_v1',JSON.stringify(st))}
 function save(){saveLocal();if(USE_FIREBASE&&firestoreDoc&&window._setDoc)pushToFirestore()}
