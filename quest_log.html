@@ -306,13 +306,13 @@ async function initFirebase(){
     const fm=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
     const am=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
     const {getFirestore,doc,setDoc,onSnapshot,enableIndexedDbPersistence}=fm;
-    const {getAuth,signInAnonymously,GoogleAuthProvider,signInWithRedirect,linkWithPopup,signOut,onAuthStateChanged}=am;
+    const {getAuth,signInAnonymously,GoogleAuthProvider,signInWithRedirect,linkWithRedirect,signOut,onAuthStateChanged}=am;
     onSnap=onSnapshot;
     const app=initializeApp(FIREBASE_CONFIG);
     db=getFirestore(app);auth=getAuth(app);
     try{await enableIndexedDbPersistence(db)}catch(e){}
     window._gp=new GoogleAuthProvider();
-    window._signInWithRedirect=signInWithRedirect;window._linkWithPopup=linkWithPopup;
+    window._signInWithRedirect=signInWithRedirect;window._linkWithRedirect=linkWithRedirect;
     window._signOut=signOut;window._doc=doc;window._setDoc=setDoc;
     onAuthStateChanged(auth,async user=>{
       currentUser=user;
@@ -355,7 +355,7 @@ function renderAuth(){
 async function signInWithGoogle(){if(!auth||!window._gp)return;try{setSyncStatus('syncing','Signing in…');await window._signInWithRedirect(auth,window._gp)}catch(e){setSyncStatus('offline','Error')}}
 async function upgradeToGoogle(){
   if(!auth||!auth.currentUser||!window._gp)return;
-  try{setSyncStatus('syncing','Linking…');await window._linkWithPopup(auth.currentUser,window._gp);renderAuth();setSyncStatus('synced','Synced')}
+  try{setSyncStatus('syncing','Linking…');await window._linkWithRedirect(auth.currentUser,window._gp);renderAuth();setSyncStatus('synced','Synced')}
   catch(e){if(e.code==='auth/credential-already-in-use'){try{await window._signInWithRedirect(auth,window._gp)}catch(e2){setSyncStatus('offline','Error')}}else setSyncStatus('offline','Error')}
 }
 async function signOutUser(){
