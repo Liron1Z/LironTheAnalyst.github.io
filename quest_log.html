@@ -313,7 +313,7 @@ async function initFirebase(){
     try{await enableIndexedDbPersistence(db)}catch(e){}
     window._gp=new GoogleAuthProvider();
     window._signInWithRedirect=signInWithRedirect;window._linkWithRedirect=linkWithRedirect;
-   window._signOut=signOut;window._doc=doc;window._setDoc=setDoc;
+   window._signOut=signOut;window._doc=doc;window._setDoc=setDoc;     try{await getRedirectResult(auth)}catch(e){console.warn('redirect:',e)}
     try{await getRedirectResult(auth)}catch(e){console.warn('redirect:',e)}
     onAuthStateChanged(auth,async user=>{
       currentUser=user;
