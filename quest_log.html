@@ -1,262 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game of Life</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0d1520;--bg2:#111d2e;--bg3:#162238;--bg4:#1c2d47;--bg5:#243658;
-  --panel:#0a1420;--panel2:#071020;
-  --s0:#ffffff;--s1:#dde8f4;--s2:#b0c8e0;--s3:#7090b0;--s4:#3d5570;
-  --gold:#c8a84c;--gold2:#e0c870;--gold3:#f0de98;
-  --blue:#4a7aaa;--bluel:#7aaad4;
-  --red:#8b2020;--red2:#d04040;
-  --teal:#1a5c50;--teal2:#2a9080;
-  --rule:rgba(100,140,180,0.18);
-  --border:rgba(100,140,180,0.28);
-  --border2:rgba(122,170,212,0.5);
-}
-html,body{height:100%;overflow:hidden}
-body{
-  font-family:'Crimson Pro',Georgia,serif;
-  display:flex;flex-direction:column;
-  background:radial-gradient(ellipse 70% 50% at 15% 20%,#0a1830,transparent 60%),
-    radial-gradient(ellipse 60% 70% at 90% 80%,#060e1c,transparent 60%),var(--bg);
-  color:var(--s1);
-}
-.topbar{
-  flex-shrink:0;height:52px;
-  background:linear-gradient(to bottom,var(--panel2),var(--panel));
-  border-bottom:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 1rem;
-  box-shadow:0 2px 24px rgba(0,0,0,0.7);
-  position:relative;z-index:50;gap:.5rem;
-}
-.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--bluel),transparent);opacity:.35}
-.topbar-left{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
-.topbar-title{font-family:'Cinzel Decorative',serif;font-size:.9rem;letter-spacing:.12em;font-weight:700;color:var(--gold2);text-shadow:0 0 28px rgba(224,200,112,.4)}
-.topbar-right{display:flex;align-items:center;gap:.6rem;flex-shrink:0}
-.topbar-gems{display:flex;gap:1.2rem;flex-wrap:wrap}
-.topbar-gem{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.08em;color:var(--s3);display:flex;align-items:center;gap:5px}
-.topbar-gem b{color:var(--s0);font-family:'Crimson Pro',serif;font-size:.9rem;font-weight:600}
-.topbar-gem.crit b{color:#f08080}
-.manage-btn{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.1em;padding:5px 11px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.1);color:var(--s3);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:30px}
-.manage-btn:hover{border-color:var(--bluel);color:var(--gold2)}
-.hamburger{display:none;background:none;border:1px solid var(--border);border-radius:2px;color:var(--s2);cursor:pointer;font-size:1.1rem;padding:4px 8px;align-items:center;justify-content:center;min-width:36px;min-height:36px;transition:all .15s}
-.hamburger:hover{border-color:var(--bluel);color:var(--gold2)}
-.sync-status{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.08em;display:flex;align-items:center;gap:4px;white-space:nowrap}
-.sync-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.sync-status.synced .sync-dot{background:#4caf50}
-.sync-status.syncing .sync-dot{background:var(--gold2);animation:pulse .8s infinite}
-.sync-status.offline .sync-dot,.sync-status.local .sync-dot{background:var(--s4)}
-.sync-text{color:var(--s3)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.auth-area{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
-.auth-user{display:flex;align-items:center;gap:6px;font-family:'Crimson Pro',serif;font-size:.82rem;color:var(--s2)}
-.auth-avatar{width:22px;height:22px;border-radius:50%;border:1px solid var(--border2)}
-.auth-name{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.btn-auth{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.09em;padding:5px 10px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.12);color:var(--s2);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:30px}
-.btn-auth:hover{border-color:var(--bluel);color:var(--s0)}
-.btn-auth.google{border-color:rgba(66,133,244,.5);color:#7aaff4}
-.btn-auth.google:hover{background:rgba(66,133,244,.15);border-color:#7aaff4}
-.btn-auth.signout{color:var(--s4)}
-.btn-auth.signout:hover{border-color:var(--red2);color:#f08080}
-.body{display:flex;flex:1;min-height:0;position:relative}
-.left{width:300px;flex-shrink:0;background:linear-gradient(to bottom,var(--panel),var(--panel2));border-right:1px solid var(--border2);display:flex;flex-direction:column;min-height:0;transition:transform .25s ease;z-index:40}
-.left-top{flex-shrink:0;padding:8px;border-bottom:1px solid var(--rule);background:rgba(0,0,0,.25);display:flex;gap:6px;align-items:center}
-.search{flex:1;font-family:'Crimson Pro',serif;font-size:.95rem;background:rgba(5,12,24,.8);border:1px solid var(--border);border-radius:2px;padding:5px 9px;color:var(--s0);outline:none;transition:border-color .15s;min-height:36px}
-.search:focus{border-color:var(--blue)}
-.search::placeholder{color:var(--s4);font-style:italic}
-.btn-done{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.08em;padding:5px 9px;border:1px solid var(--border);border-radius:2px;background:transparent;color:var(--s3);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:36px}
-.btn-done:hover,.btn-done.on{background:var(--bg5);color:var(--gold2);border-color:var(--gold)}
-.list-scroll{flex:1;overflow-y:auto}
-.list-scroll::-webkit-scrollbar{width:4px}
-.list-scroll::-webkit-scrollbar-track{background:var(--panel2)}
-.list-scroll::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px}
-.front-head{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.14em;font-weight:600;color:var(--gold);background:linear-gradient(to right,rgba(74,122,170,.18),rgba(74,122,170,.08));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:6px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;margin-top:2px;min-height:36px}
-.front-head:first-child{margin-top:0;border-top:none}
-.ch-arr{transition:transform .18s;font-size:.6rem;opacity:.55}
-.front-head.coll .ch-arr{transform:rotate(-90deg)}
-.qrow{display:flex;align-items:center;padding:7px 10px 7px 12px;border-bottom:1px solid rgba(74,122,170,.08);cursor:pointer;transition:background .1s;position:relative;min-height:44px}
-.qrow:hover{background:rgba(74,122,170,.1)}
-.qrow.sel{background:rgba(74,122,170,.2)}
-.qrow.sel::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--bluel)}
-.qrow-dot{width:14px;flex-shrink:0;text-align:center;font-size:.6rem;color:var(--s4)}
-.qrow.sel .qrow-dot{color:var(--bluel)}
-.qrow-info{flex:1;min-width:0}
-.qrow-name{font-family:'Crimson Pro',serif;font-size:1rem;font-weight:600;color:var(--s1);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.qrow.sel .qrow-name{color:var(--s0)}
-.qrow.done-r .qrow-name{color:var(--s4);text-decoration:line-through}
-.qrow-due{font-family:'Crimson Pro',serif;font-size:.78rem;font-style:italic;color:var(--s4);margin-top:1px}
-.qrow-due.ov{color:#e07070}
-.qrow-due.soon{color:var(--gold2)}
-.qrow-right{flex-shrink:0;margin-left:6px}
-.pips{display:flex;gap:2px;align-items:center}
-.pip{width:7px;height:7px;border-radius:50%}
-.pip.on-critical{background:#d04040}
-.pip.on-high{background:var(--gold)}
-.pip.on-medium{background:var(--blue)}
-.pip.on-low{background:var(--s4)}
-.pip.off{background:rgba(100,140,180,.12);border:1px solid rgba(100,140,180,.18)}
-.right{flex:1;min-height:0;background:radial-gradient(ellipse 60% 40% at 20% 15%,#182840,transparent 60%),radial-gradient(ellipse 50% 60% at 80% 85%,#0e1c30,transparent 60%),var(--bg2);display:flex;flex-direction:column;overflow:hidden}
-.detail{flex:1;overflow-y:auto;padding:1.8rem 2.2rem 1.4rem;position:relative;z-index:1}
-.detail::-webkit-scrollbar{width:4px}
-.detail::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px}
-.back-btn{display:none;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;padding:7px 14px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.1);color:var(--s2);cursor:pointer;transition:all .15s;margin-bottom:1rem;align-items:center;gap:6px;min-height:36px}
-.back-btn:hover{border-color:var(--bluel);color:var(--gold2)}
-.no-sel{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;font-family:'Crimson Pro',serif;font-style:italic;color:var(--s4);font-size:1.05rem}
-.no-sel-orn{font-size:2rem;opacity:.18;margin-bottom:.3rem;font-style:normal}
-.d-title-bar{text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:9px 1rem;margin-bottom:1.3rem;background:linear-gradient(to right,transparent,rgba(74,122,170,.07),transparent);position:relative}
-.d-title-bar::before,.d-title-bar::after{content:'✦';position:absolute;top:50%;transform:translateY(-50%);font-size:.65rem;color:var(--gold);opacity:.4}
-.d-title-bar::before{left:14px}.d-title-bar::after{right:14px}
-.d-meta{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;margin-bottom:1.1rem;align-items:center}
-.d-meta-item{font-family:'Crimson Pro',serif;font-size:.9rem;color:var(--s2);display:flex;align-items:center;gap:6px}
-.d-meta-label{color:var(--s3);font-style:italic;font-size:.82rem}
-.d-due-chip{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.05em;padding:3px 10px;border:1px solid var(--border2);border-radius:2px;color:var(--s1);background:rgba(74,122,170,.12)}
-.d-due-chip.ov{border-color:var(--red2);color:#f09090;background:rgba(139,32,32,.12)}
-.d-due-chip.soon{border-color:var(--gold);color:var(--gold2);background:rgba(200,168,76,.1)}
-hr.sep{border:none;border-top:1px solid var(--rule);margin:1.1rem 0}
-.d-sec-label{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.14em;color:var(--s3);margin-bottom:5px;display:block}
-.d-textarea{width:100%;min-height:110px;font-family:'Crimson Pro',serif;font-size:1rem;line-height:1.75;color:var(--s0);background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;padding:9px 12px;outline:none;resize:vertical;transition:border-color .15s,background .15s}
-.d-textarea:focus{border-color:var(--blue);background:rgba(5,12,24,.75)}
-.d-textarea::placeholder{color:var(--s4);font-style:italic}
-.d-edit-field{font-family:'Crimson Pro',serif;font-size:.9rem;color:var(--s1);background:rgba(5,12,24,.5);border:1px solid var(--border);border-radius:2px;padding:4px 8px;outline:none;transition:border-color .15s;min-width:80px}
-.d-edit-field:focus{border-color:var(--blue);color:var(--s0)}
-.d-edit-select{font-family:'Crimson Pro',serif;font-size:.9rem;color:var(--s1);background:#0a1420;border:1px solid var(--border);border-radius:2px;padding:4px 8px;outline:none;cursor:pointer}
-.d-edit-select option{background:#0a1420}
-.obj-list{display:flex;flex-direction:column;gap:5px;margin-bottom:.5rem}
-.obj-row{display:flex;align-items:flex-start;gap:9px;font-family:'Crimson Pro',serif;font-size:1rem;color:var(--s2);line-height:1.45}
-.obj-check{width:22px;height:22px;flex-shrink:0;margin-top:1px;border:1px solid var(--s4);border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:rgba(5,12,24,.4);transition:all .15s;min-width:22px}
-.obj-check:hover{border-color:var(--blue)}
-.obj-check.chk{background:var(--teal);border-color:var(--teal2);color:#a0f0e0}
-.obj-check.chk::after{content:'✓';font-size:11px;font-weight:bold}
-.obj-row.done-o .obj-text{text-decoration:line-through;opacity:.38}
-.add-obj-row{display:flex;gap:6px;margin-top:8px}
-.add-obj-inp{flex:1;font-family:'Crimson Pro',serif;font-size:.95rem;background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;padding:5px 9px;color:var(--s0);outline:none;transition:border-color .15s;min-height:36px}
-.add-obj-inp:focus{border-color:var(--blue)}
-.add-obj-inp::placeholder{color:var(--s4);font-style:italic}
-.btn-addobj{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.08em;padding:5px 11px;border:1px solid var(--border);border-radius:2px;background:rgba(74,122,170,.15);color:var(--s2);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:36px}
-.btn-addobj:hover{border-color:var(--bluel);color:var(--s0);background:rgba(74,122,170,.28)}
-.d-actions{display:flex;gap:8px;flex-wrap:wrap;padding-top:.9rem;border-top:1px solid var(--rule);margin-top:.5rem}
-.a-btn{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.09em;padding:7px 16px;border-radius:2px;cursor:pointer;transition:all .15s;min-height:36px}
-.a-complete{background:rgba(74,122,170,.2);color:var(--s0);border:1px solid var(--blue)}
-.a-complete:hover{background:rgba(74,122,170,.38)}
-.a-reopen{background:transparent;color:var(--s3);border:1px solid var(--border)}
-.a-reopen:hover{border-color:var(--s2);color:var(--s1)}
-.a-del{background:transparent;color:var(--s4);border:1px solid rgba(100,140,180,.14)}
-.a-del:hover{border-color:var(--red2);color:#f08080;background:rgba(139,32,32,.08)}
-.drawer{flex-shrink:0;background:linear-gradient(to bottom,var(--panel),var(--panel2));border-top:1px solid var(--border2);position:relative;z-index:30}
-.drawer-tab{display:flex;align-items:center;gap:8px;padding:7px 1.5rem;cursor:pointer;user-select:none;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.14em;color:var(--gold);transition:color .15s;min-height:44px}
-.drawer-tab:hover{color:var(--gold3)}
-.drawer-form{display:none;padding:10px 1.5rem 14px;border-top:1px solid var(--rule);flex-wrap:wrap;gap:8px;background:rgba(0,0,0,.2)}
-.drawer-form.open{display:flex}
-.ff{display:flex;flex-direction:column;gap:3px}
-.ff-label{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.1em;color:var(--s4)}
-.ff input,.ff select{font-family:'Crimson Pro',serif;font-size:.92rem;color:var(--s0);background:rgba(5,12,24,.65);border:1px solid var(--border);border-radius:2px;padding:5px 8px;outline:none;transition:border-color .15s;min-height:36px}
-.ff input:focus,.ff select:focus{border-color:var(--blue)}
-.ff select option{background:#0a1420}
-.ff input::placeholder{color:var(--s4);font-style:italic}
-.ff.fn{flex:3;min-width:170px}.ff.fch{flex:2;min-width:120px}.ff.fsm{flex:1;min-width:95px}
-.form-acts{flex:0;display:flex;align-self:flex-end;gap:6px}
-.brune{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.08em;padding:6px 14px;border-radius:2px;cursor:pointer;transition:all .15s;min-height:36px}
-.b-accept{background:rgba(74,122,170,.22);color:var(--gold2);border:1px solid var(--blue)}
-.b-accept:hover{background:rgba(74,122,170,.38)}
-.b-cancel{background:transparent;color:var(--s4);border:1px solid var(--border)}
-.b-cancel:hover{border-color:var(--s3);color:var(--s2)}
-.modal-wrap{display:none;position:fixed;inset:0;z-index:100;background:rgba(5,10,20,.8);align-items:center;justify-content:center}
-.modal-wrap.open{display:flex}
-.modal{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border2);border-radius:3px;width:420px;max-width:95vw;display:flex;flex-direction:column;max-height:80vh;box-shadow:0 20px 60px rgba(0,0,0,.75)}
-.modal-hdr{padding:14px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.1em;color:var(--gold2)}
-.modal-close{background:none;border:none;cursor:pointer;color:var(--s4);font-size:1.1rem;transition:color .15s;min-width:36px;min-height:36px}
-.modal-close:hover{color:var(--s0)}
-.modal-tabs{display:flex;border-bottom:1px solid var(--rule)}
-.modal-tab{flex:1;padding:8px;text-align:center;cursor:pointer;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.1em;color:var(--s4);border-bottom:2px solid transparent;transition:all .15s;min-height:36px;display:flex;align-items:center;justify-content:center}
-.modal-tab.active{color:var(--gold2);border-bottom-color:var(--gold)}
-.modal-body{flex:1;overflow-y:auto;padding:14px 18px}
-.modal-body::-webkit-scrollbar{width:4px}
-.modal-body::-webkit-scrollbar-thumb{background:var(--s4)}
-.manage-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.manage-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(5,12,24,.4);border:1px solid var(--border);border-radius:2px;font-family:'Crimson Pro',serif;font-size:.95rem;color:var(--s2);min-height:40px}
-.manage-item-name{flex:1}
-.manage-del{background:none;border:none;cursor:pointer;color:var(--s4);font-size:.85rem;transition:color .15s;padding:0 4px;min-width:30px;min-height:30px}
-.manage-del:hover{color:#f08080}
-.manage-add-row{display:flex;gap:6px}
-.manage-add-row input{flex:1;font-family:'Crimson Pro',serif;font-size:.92rem;background:rgba(5,12,24,.55);border:1px solid var(--border);border-radius:2px;padding:6px 9px;color:var(--s0);outline:none;transition:border-color .15s;min-height:36px}
-.manage-add-row input:focus{border-color:var(--blue)}
-.manage-add-row input::placeholder{color:var(--s4);font-style:italic}
-.btn-madd{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.08em;padding:6px 12px;border:1px solid var(--blue);border-radius:2px;background:rgba(74,122,170,.2);color:var(--s1);cursor:pointer;transition:all .15s;white-space:nowrap;min-height:36px}
-.btn-madd:hover{background:rgba(74,122,170,.35)}
-.drawer-overlay{display:none;position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.55)}
-@media (max-width:767px){
-  .hamburger{display:flex}
-  .back-btn{display:flex}
-  .topbar-gems{display:none}
-  .left{position:fixed;top:52px;left:0;bottom:0;width:85%;max-width:320px;transform:translateX(-100%);z-index:40;box-shadow:4px 0 24px rgba(0,0,0,.6)}
-  .left.open{transform:translateX(0)}
-  .drawer-overlay.active{display:block}
-  .right{width:100%}
-  .detail{padding:1rem}
-  .drawer-form{flex-direction:column}
-  .ff.fn,.ff.fch,.ff.fsm{flex:1;min-width:0;width:100%}
-  .form-acts{align-self:stretch;justify-content:flex-end}
-  .topbar-title{font-size:.75rem;letter-spacing:.06em}
-  .auth-name{max-width:70px}
-  .btn-auth{padding:4px 8px;font-size:.48rem}
-  .manage-btn{padding:4px 8px;font-size:.48rem}
-  .sync-text{display:none}
-}
-</style>
-</head>
-<body>
-<div class="topbar">
-  <div class="topbar-left">
-    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Toggle quest list">☰</button>
-    <div class="topbar-title">✦ Game of Life ✦</div>
-    <button class="manage-btn" onclick="openModal()">Manage Lists</button>
-  </div>
-  <div class="topbar-gems" id="tgems"></div>
-  <div class="topbar-right">
-    <div class="sync-status local" id="sync-status"><div class="sync-dot"></div><span class="sync-text" id="sync-text">Local</span></div>
-    <div class="auth-area" id="auth-area"></div>
-  </div>
-</div>
-<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
-<div class="body">
-  <div class="left" id="left-panel">
-    <div class="left-top">
-      <input class="search" type="text" placeholder="Search quests..." id="srch" oninput="render()">
-      <button class="btn-done" id="btnd" onclick="toggleDone()">Completed</button>
-    </div>
-    <div class="list-scroll" id="lscroll"></div>
-  </div>
-  <div class="right">
-    <div class="detail" id="detail">
-      <div class="no-sel"><div class="no-sel-orn">✦</div>Select a quest to begin</div>
-    </div>
-    <div class="drawer">
-      <div class="drawer-tab" onclick="toggleForm()"><span>✦</span> New Quest</div>
-      <div class="drawer-form" id="dform">
-        <div class="ff fn"><span class="ff-label">Quest Name</span><input type="text" id="fn" placeholder="Name this quest..."></div>
-        <div class="ff fch"><span class="ff-label">Front</span><select id="ffront"></select></div>
-        <div class="ff fsm"><span class="ff-label">Mission</span><select id="fmission"></select></div>
-        <div class="ff fsm"><span class="ff-label">Priority</span><select id="fprio"><option value="medium">Medium</option><option value="critical">Critical</option><option value="high">High</option><option value="low">Low</option></select></div>
-        <div class="ff fsm"><span class="ff-label">Due Date</span><input type="date" id="fdue"></div>
-        <div class="form-acts"><button class="brune b-cancel" onclick="cancelForm()">Cancel</button><button class="brune b-accept" onclick="submitQuest()">Accept Quest</button></div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal-wrap" id="modal-wrap" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <div class="modal-hdr"><span>Manage Lists</span><button class="modal-close" onclick="closeModal()">✕</button></div>
-    <div class="modal-tabs"><div class="modal-tab active" onclick="switchTab('fronts')">Fronts</div><div class="modal-tab" onclick="switchTab('missions')">Missions</div></div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
 <script type="module">
 // ============================================================
 // FIREBASE CONFIG
@@ -305,20 +46,19 @@ async function initFirebase(){
     const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
     const fm=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
     const am=await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js');
-    const {getFirestore,doc,setDoc,onSnapshot,enableIndexedDbPersistence}=fm;
-    const {getAuth,signInAnonymously,GoogleAuthProvider,signInWithRedirect,linkWithRedirect,getRedirectResult,signOut,onAuthStateChanged}=am;
+    const {getFirestore,doc,setDoc,onSnapshot}=fm;
+    const {getAuth,GoogleAuthProvider,signInWithRedirect,getRedirectResult,signOut,onAuthStateChanged}=am;
     onSnap=onSnapshot;
     const app=initializeApp(FIREBASE_CONFIG);
     db=getFirestore(app);auth=getAuth(app);
-    try{await enableIndexedDbPersistence(db)}catch(e){}
     window._gp=new GoogleAuthProvider();
-    window._signInWithRedirect=signInWithRedirect;window._linkWithRedirect=linkWithRedirect;
-   window._signOut=signOut;window._doc=doc;window._setDoc=setDoc;     try{await getRedirectResult(auth)}catch(e){console.warn('redirect:',e)}
+    window._signInWithRedirect=signInWithRedirect;
+    window._signOut=signOut;window._doc=doc;window._setDoc=setDoc;
     try{await getRedirectResult(auth)}catch(e){console.warn('redirect:',e)}
-    onAuthStateChanged(auth,async user=>{
+    onAuthStateChanged(auth,user=>{
       currentUser=user;
       if(user){setSyncStatus('syncing','Syncing…');firestoreDoc=doc(db,'users',user.uid,'data','questlog');subscribeFS()}
-      else{try{await signInAnonymously(auth)}catch(e){setSyncStatus('offline','Offline')}}
+      else{firestoreDoc=null;setSyncStatus('local','Local')}
       renderAuth();
     });
   }catch(e){console.warn('Firebase failed:',e);setSyncStatus('offline','Offline');renderAuth()}
@@ -345,20 +85,11 @@ function renderAuth(){
   if(!USE_FIREBASE){area.innerHTML='';return}
   const user=currentUser;
   if(!user){area.innerHTML=`<button class="btn-auth google" onclick="signInWithGoogle()">Sign in with Google</button>`;return}
-  if(user.isAnonymous){
-    area.innerHTML=`<span style="color:var(--s4);font-size:.75rem;font-style:italic;font-family:'Crimson Pro',serif">Anonymous</span><button class="btn-auth google" onclick="upgradeToGoogle()">↑ Google</button>`;
-  }else{
-    const photo=user.photoURL?`<img class="auth-avatar" src="${user.photoURL}" alt="">`:'';
-    const name=user.displayName||user.email||'User';
-    area.innerHTML=`<div class="auth-user">${photo}<span class="auth-name" title="${name}">${name}</span></div><button class="btn-auth signout" onclick="signOutUser()">Sign Out</button>`;
-  }
+  const photo=user.photoURL?`<img class="auth-avatar" src="${user.photoURL}" alt="">`:'';
+  const name=user.displayName||user.email||'User';
+  area.innerHTML=`<div class="auth-user">${photo}<span class="auth-name" title="${name}">${name}</span></div><button class="btn-auth signout" onclick="signOutUser()">Sign Out</button>`;
 }
 async function signInWithGoogle(){if(!auth||!window._gp)return;try{setSyncStatus('syncing','Signing in…');await window._signInWithRedirect(auth,window._gp)}catch(e){setSyncStatus('offline','Error')}}
-async function upgradeToGoogle(){
-  if(!auth||!auth.currentUser||!window._gp)return;
-  try{setSyncStatus('syncing','Linking…');await window._linkWithRedirect(auth.currentUser,window._gp);renderAuth();setSyncStatus('synced','Synced')}
-  catch(e){if(e.code==='auth/credential-already-in-use'){try{await window._signInWithRedirect(auth,window._gp)}catch(e2){setSyncStatus('offline','Error')}}else setSyncStatus('offline','Error')}
-}
 async function signOutUser(){
   if(!auth||!window._signOut)return;
   try{if(unsub){unsub();unsub=null}await window._signOut(auth);currentUser=null;firestoreDoc=null;setSyncStatus('local','Local');renderAuth()}
@@ -456,5 +187,3 @@ function removeItem(i){if(modalTab==='fronts')st.fronts.splice(i,1);else st.miss
 render();
 initFirebase();
 </script>
-</body>
-</html>
